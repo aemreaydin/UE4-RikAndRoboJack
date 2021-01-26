@@ -13,6 +13,16 @@ AWeaponProjectile::AWeaponProjectile()
 	// Make collision component root
 	RootComponent = CollisionComponent;
 
+	// Find and add the sphere mesh as the static mesh component
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMeshFinder(TEXT("/Game/Weapon/WeaponProjectile"));
+	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh Component"));
+	if(SphereMeshFinder.Object)
+	{
+		ProjectileMesh->SetStaticMesh(SphereMeshFinder.Object);		
+	}
+	ProjectileMesh->SetupAttachment(CollisionComponent);
+	ProjectileMesh->SetRelativeScale3D(FVector(0.03f));
+
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
 	ProjectileMovementComponent->UpdatedComponent = CollisionComponent;
 	ProjectileMovementComponent->InitialSpeed = 3000.0f;

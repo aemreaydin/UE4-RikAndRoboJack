@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class METALGEARNOTSOSOLID_API AMGNSSGameMode : public AGameModeBase
+class METALGEARNOTSOSOLID_API AMGNSSGameMode final : public AGameModeBase
 {
 	GENERATED_BODY()
 	

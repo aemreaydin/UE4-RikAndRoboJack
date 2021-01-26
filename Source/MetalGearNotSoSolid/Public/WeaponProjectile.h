@@ -24,6 +24,10 @@ protected:
 	// Projectile movement component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
 	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	// Static Mesh Component to render projectile
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
+	UStaticMeshComponent* ProjectileMesh;
 	
 public:
 	// Called when projectile hits something

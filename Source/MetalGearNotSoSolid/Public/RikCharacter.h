@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -12,7 +10,7 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 
 UCLASS()
-class METALGEARNOTSOSOLID_API ARikCharacter : public ACharacter
+class METALGEARNOTSOSOLID_API ARikCharacter final : public ACharacter
 {
 	GENERATED_BODY()
 
