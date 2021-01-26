@@ -21,7 +21,8 @@ void ARikHUD::DrawHUD()
 	// Find the center of the screen
 	const FVector2D Center(Canvas->ClipX * 0.5f, Canvas->ClipY * 0.5f);
 
-	const FVector2D CrosshairPosition(Center.X - CrosshairTexture->GetSurfaceWidth() / 2, Center.Y - CrosshairTexture->GetSurfaceHeight() / 2);
+	const FVector2D CrosshairPosition(Center.X - CrosshairTexture->GetSurfaceWidth() / 2,
+		Center.Y - CrosshairTexture->GetSurfaceHeight() / 2);
 
 	FCanvasTileItem TileItem(CrosshairPosition, CrosshairTexture->Resource, FLinearColor::White);
 	TileItem.BlendMode = SE_BLEND_Translucent;

@@ -16,6 +16,7 @@ public:
 	ARikHUD();
 
 protected:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* CrosshairTexture;
 
 public:

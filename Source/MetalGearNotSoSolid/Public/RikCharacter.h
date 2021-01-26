@@ -27,6 +27,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	UAnimSequence* FireAnimation;
+
+	UPROPERTY(BlueprintReadOnly, Category="Gameplay")
+	bool bIsObjectPickedUp;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
