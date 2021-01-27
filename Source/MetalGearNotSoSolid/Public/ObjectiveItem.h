@@ -11,8 +11,8 @@ UCLASS()
 class METALGEARNOTSOSOLID_API AObjectiveItem : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	AObjectiveItem();
 
 protected:
@@ -27,7 +27,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Particle")
 	USoundBase* ParticlePickupSound;
-public:	
+public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 protected:
 	void PlayParticleFX();

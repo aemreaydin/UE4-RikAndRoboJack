@@ -16,14 +16,15 @@ AWeaponProjectile::AWeaponProjectile()
 	// Find and add the sphere mesh as the static mesh component
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMeshFinder(TEXT("/Game/Weapon/WeaponProjectile"));
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh Component"));
-	if(SphereMeshFinder.Object)
+	if (SphereMeshFinder.Object)
 	{
-		ProjectileMesh->SetStaticMesh(SphereMeshFinder.Object);		
+		ProjectileMesh->SetStaticMesh(SphereMeshFinder.Object);
 	}
 	ProjectileMesh->SetupAttachment(CollisionComponent);
 	ProjectileMesh->SetRelativeScale3D(FVector(0.03f));
 
-	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(
+		TEXT("Projectile Movement Component"));
 	ProjectileMovementComponent->UpdatedComponent = CollisionComponent;
 	ProjectileMovementComponent->InitialSpeed = 3000.0f;
 	ProjectileMovementComponent->MaxSpeed = 3000.0f;
@@ -35,10 +36,10 @@ AWeaponProjectile::AWeaponProjectile()
 }
 
 void AWeaponProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-    FVector NormalImpulse, const FHitResult& Hit)
+                              FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse then destroy if the other actor is a physics body
-	if(OtherActor != nullptr && OtherActor != this && OtherComp != nullptr && OtherComp->IsSimulatingPhysics())
+	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 		Destroy();

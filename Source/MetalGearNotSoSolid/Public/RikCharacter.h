@@ -30,18 +30,18 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category="Gameplay")
 	bool bIsObjectPickedUp;
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
 	USkeletalMeshComponent* PlayerMeshComponent;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
 	USkeletalMeshComponent* GunMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* CameraComponent;
-	
-public:	
+
+public:
 	USkeletalMeshComponent* GetPlayerMesh() const { return PlayerMeshComponent; }
 	UCameraComponent* GetFPSCamera() const { return CameraComponent; }
 	// TODO Make a 3rd Person Camera
@@ -54,5 +54,5 @@ protected:
 	void MoveForward(float Val);
 	void MoveRight(float Val);
 
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;	
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 };

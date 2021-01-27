@@ -12,10 +12,10 @@ UCLASS()
 class METALGEARNOTSOSOLID_API AWeaponProjectile : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:
 	AWeaponProjectile();
-	
+
 protected:
 	// Used to check sphere collision
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Projectile")
@@ -28,12 +28,12 @@ protected:
 	// Static Mesh Component to render projectile
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
 	UStaticMeshComponent* ProjectileMesh;
-	
+
 public:
 	// Called when projectile hits something
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-		const FHitResult& Hit);
+	           const FHitResult& Hit);
 
 	USphereComponent* GetCollisionComponent() const { return CollisionComponent; }
 	UProjectileMovementComponent* GetProjectileMovementComponent() const { return ProjectileMovementComponent; }

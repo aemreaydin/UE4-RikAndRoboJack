@@ -3,4 +3,4 @@
 #include "MetalGearNotSoSolid.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, MetalGearNotSoSolid, "MetalGearNotSoSolid" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, MetalGearNotSoSolid, "MetalGearNotSoSolid");

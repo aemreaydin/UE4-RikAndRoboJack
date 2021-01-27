@@ -9,7 +9,7 @@
 // Sets default values
 ABlackHole::ABlackHole()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Black Hole Mesh"));
@@ -19,7 +19,7 @@ ABlackHole::ABlackHole()
 	OuterSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Outer Sphere"));
 	OuterSphereComponent->SetupAttachment(MeshComponent);
 	OuterSphereComponent->SetSphereRadius(3000.0f);
-	
+
 	InnerSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Inner Sphere"));
 	InnerSphereComponent->SetupAttachment(MeshComponent);
 	InnerSphereComponent->SetSphereRadius(100.0f);
@@ -35,22 +35,22 @@ void ABlackHole::Tick(float DeltaTime)
 
 	TArray<UPrimitiveComponent*> Components;
 	OuterSphereComponent->GetOverlappingComponents(Components);
-	for(const auto Component : Components)
+	for (const auto Component : Components)
 	{
-		if(Component && Component->IsSimulatingPhysics())
+		if (Component && Component->IsSimulatingPhysics())
 		{
 			Component->AddRadialForce(GetActorLocation(), OuterSphereComponent->GetScaledSphereRadius(), -HoleStrength,
-				RIF_Linear, true);
+			                          RIF_Linear, true);
 		}
 	}
 }
 
 void ABlackHole::InnerSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                    const FHitResult& SweepResult)
 {
-	if(OtherActor != nullptr && OtherActor != this && OtherComp != nullptr)
+	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr)
 	{
 		OtherActor->Destroy();
 	}
 }
-

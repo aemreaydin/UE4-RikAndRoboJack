@@ -9,7 +9,7 @@ AMGNSSGameMode::AMGNSSGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_RikCharacter"));
 	static ConstructorHelpers::FClassFinder<AHUD> PlayerHudClassFinder(TEXT("/Game/Blueprints/BP_Rik_HUD"));
-	
+
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 	HUDClass = PlayerHudClassFinder.Class;
 }

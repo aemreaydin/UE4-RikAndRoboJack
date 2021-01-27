@@ -12,8 +12,8 @@ ARikCharacter::ARikCharacter()
 	CameraComponent->SetupAttachment(GetCapsuleComponent());
 	CameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, BaseEyeHeight));
 	CameraComponent->bUsePawnControlRotation = true;
-	
- 	PlayerMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player Mesh"));
+
+	PlayerMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player Mesh"));
 	PlayerMeshComponent->SetupAttachment(CameraComponent);
 	PlayerMeshComponent->CastShadow = false;
 	PlayerMeshComponent->SetRelativeRotation(FRotator(2.0f, -15.0f, 5.0f));
@@ -27,7 +27,7 @@ ARikCharacter::ARikCharacter()
 
 void ARikCharacter::Fire()
 {
-	if(ProjectileClass)
+	if (ProjectileClass)
 	{
 		const auto MuzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
 		const auto MuzzleRotation = GunMeshComponent->GetSocketRotation("Muzzle");
@@ -38,18 +38,19 @@ void ARikCharacter::Fire()
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		// Spawn the projectile at the muzzle
-		GetWorld()->SpawnActor<AWeaponProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParameters);
+		GetWorld()->SpawnActor<AWeaponProjectile
+		>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParameters);
 	}
 
-	if(FireSound)
+	if (FireSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
-	if(FireAnimation)
+	if (FireAnimation)
 	{
 		UAnimInstance* AnimInstance = PlayerMeshComponent->GetAnimInstance();
-		if(AnimInstance)
+		if (AnimInstance)
 		{
 			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f);
 		}
@@ -58,7 +59,7 @@ void ARikCharacter::Fire()
 
 void ARikCharacter::MoveForward(const float Val)
 {
-	if(Val != 0.0f)
+	if (Val != 0.0f)
 	{
 		AddMovementInput(GetActorForwardVector(), Val);
 	}
@@ -66,7 +67,7 @@ void ARikCharacter::MoveForward(const float Val)
 
 void ARikCharacter::MoveRight(const float Val)
 {
-	if(Val != 0.0f)
+	if (Val != 0.0f)
 	{
 		AddMovementInput(GetActorRightVector(), Val);
 	}
@@ -84,6 +85,5 @@ void ARikCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("MoveRight", this, &ARikCharacter::MoveRight);
 
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);	
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
-

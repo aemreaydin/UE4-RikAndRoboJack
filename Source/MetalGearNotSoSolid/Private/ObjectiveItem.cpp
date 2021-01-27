@@ -26,16 +26,16 @@ void AObjectiveItem::NotifyActorBeginOverlap(AActor* OtherActor)
 	PlayParticleFX();
 
 	const auto Rik = Cast<ARikCharacter>(OtherActor);
-	if(Rik)
+	if (Rik)
 	{
 		Rik->bIsObjectPickedUp = true;
 
 
-		if(ParticlePickupSound)
+		if (ParticlePickupSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, ParticlePickupSound, GetActorLocation());
 		}
-		
+
 		Destroy();
 	}
 }

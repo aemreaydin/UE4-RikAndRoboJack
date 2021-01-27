@@ -12,8 +12,8 @@ UCLASS()
 class METALGEARNOTSOSOLID_API ABlackHole : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABlackHole();
 
@@ -29,11 +29,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float HoleStrength;
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
 	void InnerSphereOverlap(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
-		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	                        class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                        const FHitResult& SweepResult);
 };
