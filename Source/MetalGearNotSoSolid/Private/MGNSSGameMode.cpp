@@ -13,3 +13,13 @@ AMGNSSGameMode::AMGNSSGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 	HUDClass = PlayerHudClassFinder.Class;
 }
+
+void AMGNSSGameMode::CompleteMission(APawn* PlayerPawn)
+{
+	if(PlayerPawn)
+	{
+		PlayerPawn->DisableInput(nullptr);
+	}
+
+	OnMissionComplete(PlayerPawn);
+}

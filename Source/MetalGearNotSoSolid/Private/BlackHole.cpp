@@ -40,7 +40,7 @@ void ABlackHole::Tick(float DeltaTime)
 		if (Component && Component->IsSimulatingPhysics())
 		{
 			Component->AddRadialForce(GetActorLocation(), OuterSphereComponent->GetScaledSphereRadius(), -HoleStrength,
-			                          RIF_Linear, true);
+			                          RIF_Linear);
 		}
 	}
 }
