@@ -24,4 +24,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
 	void OnMissingObjective(APawn* PlayerPawn);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category="Spectate")
+	TSubclassOf<AActor> SpectateViewClass;
 };
