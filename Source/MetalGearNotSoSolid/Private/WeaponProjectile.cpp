@@ -38,6 +38,7 @@ AWeaponProjectile::AWeaponProjectile()
 void AWeaponProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                               FVector NormalImpulse, const FHitResult& Hit)
 {
+	UE_LOG(LogTemp, Warning, TEXT("LMAO"));
 	// Only add impulse then destroy if the other actor is a physics body
 	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr && OtherComp->IsSimulatingPhysics())
 	{
