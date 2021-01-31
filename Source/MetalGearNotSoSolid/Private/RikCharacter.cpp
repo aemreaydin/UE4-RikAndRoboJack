@@ -3,6 +3,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -22,6 +23,8 @@ ARikCharacter::ARikCharacter()
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Gun Mesh"));
 	GunMeshComponent->CastShadow = false;
 	GunMeshComponent->SetupAttachment(PlayerMeshComponent, "GripPoint");
+
+	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("Noise Emitter"));
 }
 
 
@@ -36,6 +39,7 @@ void ARikCharacter::Fire()
 		FActorSpawnParameters ActorSpawnParameters;
 		ActorSpawnParameters.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		ActorSpawnParameters.Instigator = this;
 
 		// Spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AWeaponProjectile

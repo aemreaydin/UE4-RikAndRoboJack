@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;	
+
 public:
 	USkeletalMeshComponent* GetPlayerMesh() const { return PlayerMeshComponent; }
 	UCameraComponent* GetFPSCamera() const { return CameraComponent; }
