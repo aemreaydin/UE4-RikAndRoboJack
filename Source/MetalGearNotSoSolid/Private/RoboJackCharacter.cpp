@@ -1,6 +1,7 @@
 #include "RoboJackCharacter.h"
 
-#include "DrawDebugHelpers.h"
+
+#include "AIController.h"
 #include "MGNSSGameMode.h"
 #include "RikCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -24,19 +25,22 @@ void ARoboJackCharacter::BeginPlay()
 
 	OriginalRotation = GetActorRotation();
 	SetAIState(EAIState::Idle);
+
+	Patrol();
 }
 
 void ARoboJackCharacter::ResetRotation()
 {
-	if(AIState == EAIState::Alert) return;
-	
+	if (AIState == EAIState::Alert) return;
+
 	SetActorRotation(OriginalRotation);
 	SetAIState(EAIState::Idle);
+	Patrol();
 }
 
 void ARoboJackCharacter::SetAIState(const EAIState NewState)
 {
-	if(AIState == NewState) return;
+	if (AIState == NewState) return;
 
 	AIState = NewState;
 	OnAIStateChanged(NewState);
@@ -46,11 +50,22 @@ void ARoboJackCharacter::SetAIState(const EAIState NewState)
 void ARoboJackCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (TargetPoints.Num() == 0) return;
+
+	const auto Distance = (GetActorLocation() - TargetPoints[CurrentTargetPointIndex]->GetActorLocation()).Size2D();
+	UE_LOG(LogTemp, Warning, TEXT("%f"), Distance);
+	if (Distance < 50)
+	{
+		CurrentTargetPointIndex++;
+		CurrentTargetPointIndex %= TargetPoints.Num();
+		Patrol();
+	}
 }
 
 void ARoboJackCharacter::OnPawnSeen(APawn* SeenPawn)
 {
 	if (!SeenPawn) return;
+	StopPatrol();
 
 	const auto GameMode = Cast<AMGNSSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode && !GameMode->bIsMissionComplete)
@@ -65,8 +80,9 @@ void ARoboJackCharacter::OnPawnSeen(APawn* SeenPawn)
 
 void ARoboJackCharacter::OnPawnHeard(APawn* HeardPawn, const FVector& Location, float Volume)
 {
-	if(AIState == EAIState::Alert) return;
-	
+	if (AIState == EAIState::Alert) return;
+	StopPatrol();
+
 	auto NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Location);
 	NewRotation.Pitch = 0.0f;
 	NewRotation.Roll = 0.0f;
@@ -76,4 +92,26 @@ void ARoboJackCharacter::OnPawnHeard(APawn* HeardPawn, const FVector& Location, 
 	GetWorldTimerManager().SetTimer(ResetRotationTimerHandle, this, &ARoboJackCharacter::ResetRotation, 3.0f);
 
 	SetAIState(EAIState::Suspicious);
+}
+
+void ARoboJackCharacter::Patrol()
+{
+	if (AIState == EAIState::Alert) return;
+	if (TargetPoints.Num() == 0) return;
+
+	MoveToTarget(TargetPoints[CurrentTargetPointIndex]);
+}
+
+void ARoboJackCharacter::MoveToTarget(AActor* Target) const
+{
+	const auto AI = Cast<AAIController>(GetController());
+	if (AI)
+	{
+		AI->MoveToActor(Target);
+	}
+}
+
+void ARoboJackCharacter::StopPatrol() const
+{
+	GetController()->StopMovement();
 }

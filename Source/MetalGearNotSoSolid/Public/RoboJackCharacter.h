@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Engine/TargetPoint.h"
 #include "GameFramework/Character.h"
 
 #include "RoboJackCharacter.generated.h"
@@ -36,22 +38,31 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	EAIState AIState;
-	
+
 	void SetAIState(EAIState NewState);
-	
+
 	UFUNCTION(BlueprintImplementableEvent, Category="AI")
 	void OnAIStateChanged(EAIState NewState);
-public:	
+
+	int CurrentTargetPointIndex = 0;
+
+
+	UPROPERTY(EditInstanceOnly, Category="AI")
+	TArray<ATargetPoint*> TargetPoints;
+public:
 	virtual void Tick(float DeltaTime) override;
-	
+
 protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	void ResetRotation();
-	
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
 	UFUNCTION()
 	void OnPawnHeard(APawn* HeardPawn, const FVector& Location, float Volume);
+
+	void Patrol();
+	void MoveToTarget(AActor* Target) const;
+	void StopPatrol() const;
 };
