@@ -23,11 +23,23 @@ void ARoboJackCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	OriginalRotation = GetActorRotation();
+	SetAIState(EAIState::Idle);
 }
 
 void ARoboJackCharacter::ResetRotation()
 {
+	if(AIState == EAIState::Alert) return;
+	
 	SetActorRotation(OriginalRotation);
+	SetAIState(EAIState::Idle);
+}
+
+void ARoboJackCharacter::SetAIState(const EAIState NewState)
+{
+	if(AIState == NewState) return;
+
+	AIState = NewState;
+	OnAIStateChanged(NewState);
 }
 
 // Called every frame
@@ -40,22 +52,21 @@ void ARoboJackCharacter::OnPawnSeen(APawn* SeenPawn)
 {
 	if (!SeenPawn) return;
 
-	const auto Rik = Cast<ARikCharacter>(SeenPawn);
-	if(Rik)
+	const auto GameMode = Cast<AMGNSSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode && !GameMode->bIsMissionComplete)
 	{
-		const auto GameMode = Cast<AMGNSSGameMode>(GetWorld()->GetAuthGameMode());
-		if(GameMode && !GameMode->bIsMissionComplete)
-		{
-			GameMode->CompleteMission(Rik, false);
-			GameMode->bIsMissionComplete = true;
-		}
+		GameMode->CompleteMission(SeenPawn, false);
+		GameMode->bIsMissionComplete = true;
 	}
+
+	GetWorldTimerManager().ClearTimer(ResetRotationTimerHandle);
+	SetAIState(EAIState::Alert);
 }
 
 void ARoboJackCharacter::OnPawnHeard(APawn* HeardPawn, const FVector& Location, float Volume)
 {
-	DrawDebugSphere(GetWorld(), Location, 32.0f, 16, FColor::Red, true, 10.0f);
-
+	if(AIState == EAIState::Alert) return;
+	
 	auto NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Location);
 	NewRotation.Pitch = 0.0f;
 	NewRotation.Roll = 0.0f;
@@ -63,4 +74,6 @@ void ARoboJackCharacter::OnPawnHeard(APawn* HeardPawn, const FVector& Location, 
 
 	GetWorldTimerManager().ClearTimer(ResetRotationTimerHandle);
 	GetWorldTimerManager().SetTimer(ResetRotationTimerHandle, this, &ARoboJackCharacter::ResetRotation, 3.0f);
+
+	SetAIState(EAIState::Suspicious);
 }

@@ -8,7 +8,7 @@ public class MetalGearNotSoSolid : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new[] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule"});
+		PublicDependencyModuleNames.AddRange(new[] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "UMG"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
