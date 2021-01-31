@@ -15,29 +15,27 @@ AMGNSSGameMode::AMGNSSGameMode()
 	HUDClass = PlayerHudClassFinder.Class;
 }
 
-void AMGNSSGameMode::CompleteMission(APawn* PlayerPawn)
+void AMGNSSGameMode::CompleteMission(APawn* PlayerPawn, const bool bIsSuccess)
 {
-	if (PlayerPawn)
-	{
-		PlayerPawn->DisableInput(nullptr);
+	if (!PlayerPawn) return;
+	
+	PlayerPawn->DisableInput(nullptr);
 
-		if (SpectateViewClass)
+	if (SpectateViewClass)
+	{
+		TArray<AActor*> Actors;
+		UGameplayStatics::GetAllActorsOfClass(this, SpectateViewClass, Actors);
+		if (Actors.Num() > 0)
 		{
-			TArray<AActor*> Actors;
-			UGameplayStatics::GetAllActorsOfClass(this, SpectateViewClass, Actors);
-			if (Actors.Num() > 0)
+			const auto Controller = PlayerPawn->GetController();
+			const auto PC = Cast<APlayerController>(Controller);
+			if (PC)
 			{
-				const auto Controller = PlayerPawn->GetController();
-				const auto PC = Cast<APlayerController>(Controller);
-				if (PC)
-				{
-					const auto SpectateCamera = Actors[0];
-					PC->SetViewTargetWithBlend(SpectateCamera, 0.5f, VTBlend_Cubic);
-				}
+				const auto SpectateCamera = Actors[0];
+				PC->SetViewTargetWithBlend(SpectateCamera, 0.5f, VTBlend_Cubic);
 			}
 		}
 	}
 
-
-	OnMissionComplete(PlayerPawn);
+	OnMissionComplete(PlayerPawn, bIsSuccess);
 }

@@ -36,7 +36,7 @@ void AExtractionZone::OnExtractionOverlap(
 	{
 		if(Rik->bIsObjectPickedUp)
 		{			
-			GameMode->CompleteMission(Rik);
+			GameMode->CompleteMission(Rik, true);
 		} else
 		{
 			GameMode->OnMissingObjective(Rik);

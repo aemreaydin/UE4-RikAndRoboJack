@@ -17,13 +17,15 @@ class METALGEARNOTSOSOLID_API AMGNSSGameMode final : public AGameModeBase
 public:
 	AMGNSSGameMode();
 
-	void CompleteMission(APawn* PlayerPawn);
+	void CompleteMission(APawn* PlayerPawn, bool bIsSuccess);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissionComplete(APawn* PlayerPawn);
+	void OnMissionComplete(APawn* PlayerPawn, bool bIsSuccess);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
 	void OnMissingObjective(APawn* PlayerPawn);
+
+	bool bIsMissionComplete = false;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Spectate")

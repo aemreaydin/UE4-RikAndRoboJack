@@ -22,12 +22,18 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
 	UPawnSensingComponent* PawnSensingComponent;
 
+
+	FRotator OriginalRotation;
+	FTimerHandle ResetRotationTimerHandle;
 public:	
 	virtual void Tick(float DeltaTime) override;
 	
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void ResetRotation();
+	
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
 	UFUNCTION()
