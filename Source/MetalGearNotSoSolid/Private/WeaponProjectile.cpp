@@ -33,6 +33,10 @@ AWeaponProjectile::AWeaponProjectile()
 
 	// Lifespan of the projectile
 	InitialLifeSpan = 3.0f;
+
+	// 
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AWeaponProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -41,9 +45,12 @@ void AWeaponProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	// Only add impulse then destroy if the other actor is a physics body
 	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 10.0f, GetActorLocation());
+		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 	}
 
-	MakeNoise(1.0f, GetInstigator());
-	Destroy();
+	if(HasAuthority())
+	{
+		MakeNoise(1.0f, GetInstigator());
+		Destroy();
+	}
 }

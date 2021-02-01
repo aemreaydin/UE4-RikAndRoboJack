@@ -50,6 +50,10 @@ public:
 	// TODO Make a 3rd Person Camera
 
 protected:
+	// Fire should be called from the server
+	UFUNCTION(Server, WithValidation, Reliable)
+	void Server_Fire();
+	
 	// Fire a projectile
 	void Fire();
 

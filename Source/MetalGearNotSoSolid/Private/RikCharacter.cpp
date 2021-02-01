@@ -28,7 +28,7 @@ ARikCharacter::ARikCharacter()
 }
 
 
-void ARikCharacter::Fire()
+void ARikCharacter::Server_Fire_Implementation()
 {
 	if (ProjectileClass)
 	{
@@ -45,7 +45,16 @@ void ARikCharacter::Fire()
 		GetWorld()->SpawnActor<AWeaponProjectile
 		>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParameters);
 	}
+}
 
+bool ARikCharacter::Server_Fire_Validate()
+{
+	return true;
+}
+
+void ARikCharacter::Fire()
+{
+	Server_Fire();
 	if (FireSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
