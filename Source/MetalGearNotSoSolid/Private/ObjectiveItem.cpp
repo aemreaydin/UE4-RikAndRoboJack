@@ -17,6 +17,8 @@ AObjectiveItem::AObjectiveItem()
 	SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	SphereComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComponent->SetupAttachment(MeshComponent);
+
+	SetReplicates(true);
 }
 
 void AObjectiveItem::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -25,18 +27,20 @@ void AObjectiveItem::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	PlayParticleFX();
 
-	const auto Rik = Cast<ARikCharacter>(OtherActor);
-	if (Rik)
+	if (ParticlePickupSound)
 	{
-		Rik->bIsObjectPickedUp = true;
+		UGameplayStatics::PlaySoundAtLocation(this, ParticlePickupSound, GetActorLocation());
+	}
 
-
-		if (ParticlePickupSound)
+	// Only destroy the object on the server
+	if (HasAuthority())
+	{
+		const auto Rik = Cast<ARikCharacter>(OtherActor);
+		if (Rik)
 		{
-			UGameplayStatics::PlaySoundAtLocation(this, ParticlePickupSound, GetActorLocation());
+			Rik->bIsObjectPickedUp = true;
+			Destroy();
 		}
-
-		Destroy();
 	}
 }
 

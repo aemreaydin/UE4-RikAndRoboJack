@@ -27,6 +27,20 @@ ARikCharacter::ARikCharacter()
 	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("Noise Emitter"));
 }
 
+void ARikCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// No need to this locally since we're already controlling this in the client
+	if(!IsLocallyControlled())
+	{
+		auto CurrentRotation = GetActorRotation();
+		const auto RemotePitch = RemoteViewPitch * 360.0f / 255.0f;
+		CurrentRotation.Pitch = RemotePitch;
+		SetActorRotation(CurrentRotation);
+	}
+}
+
 
 void ARikCharacter::Server_Fire_Implementation()
 {

@@ -18,6 +18,8 @@ public:
 	// Sets default values for this character's properties
 	ARikCharacter();
 
+	virtual void Tick(float DeltaTime) override;
+	
 	// Weapon Projectile class to spawn
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
 	TSubclassOf<AWeaponProjectile> ProjectileClass;

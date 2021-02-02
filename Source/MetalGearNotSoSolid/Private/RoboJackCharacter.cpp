@@ -6,6 +6,7 @@
 #include "RikCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ARoboJackCharacter::ARoboJackCharacter()
@@ -38,12 +39,17 @@ void ARoboJackCharacter::ResetRotation()
 	Patrol();
 }
 
+void ARoboJackCharacter::OnRep_AIState()
+{
+	OnAIStateChanged(AIState);
+}
+
 void ARoboJackCharacter::SetAIState(const EAIState NewState)
 {
 	if (AIState == NewState) return;
 
 	AIState = NewState;
-	OnAIStateChanged(NewState);
+	OnRep_AIState();
 }
 
 // Called every frame
@@ -114,4 +120,11 @@ void ARoboJackCharacter::MoveToTarget(AActor* Target) const
 void ARoboJackCharacter::StopPatrol() const
 {
 	GetController()->StopMovement();
+}
+
+void ARoboJackCharacter::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifetimeProps ) const
+{
+	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+
+	DOREPLIFETIME( ARoboJackCharacter, AIState ); 
 }

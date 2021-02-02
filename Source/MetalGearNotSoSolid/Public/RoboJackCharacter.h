@@ -36,9 +36,13 @@ protected:
 	FRotator OriginalRotation;
 	FTimerHandle ResetRotationTimerHandle;
 
-	UPROPERTY(VisibleAnywhere)
-	EAIState AIState;
+	
+	UPROPERTY(ReplicatedUsing=OnRep_AIState)
+	EAIState AIState;	
 
+	UFUNCTION()
+	void OnRep_AIState();
+	
 	void SetAIState(EAIState NewState);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="AI")
