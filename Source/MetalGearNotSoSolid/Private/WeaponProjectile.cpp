@@ -34,9 +34,9 @@ AWeaponProjectile::AWeaponProjectile()
 	// Lifespan of the projectile
 	InitialLifeSpan = 3.0f;
 
-	// 
-	SetReplicates(true);
-	SetReplicateMovement(true);
+	//
+	bReplicates = true;
+	SetReplicatingMovement(true);
 }
 
 void AWeaponProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,

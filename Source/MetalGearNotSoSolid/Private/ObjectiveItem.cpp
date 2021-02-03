@@ -18,7 +18,7 @@ AObjectiveItem::AObjectiveItem()
 	SphereComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComponent->SetupAttachment(MeshComponent);
 
-	SetReplicates(true);
+	bReplicates = true;
 }
 
 void AObjectiveItem::NotifyActorBeginOverlap(AActor* OtherActor)

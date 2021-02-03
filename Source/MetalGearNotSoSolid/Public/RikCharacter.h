@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	UAnimSequence* FireAnimation;
 
-	UPROPERTY(BlueprintReadOnly, Category="Gameplay")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category="Gameplay")
 	bool bIsObjectPickedUp;
 
 protected:

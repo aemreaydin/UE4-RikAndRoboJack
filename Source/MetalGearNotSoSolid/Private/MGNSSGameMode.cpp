@@ -2,6 +2,8 @@
 
 
 #include "MGNSSGameMode.h"
+
+#include "MGNSSGameState.h"
 #include "RikHUD.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -10,32 +12,38 @@ AMGNSSGameMode::AMGNSSGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_RikCharacter"));
 	static ConstructorHelpers::FClassFinder<AHUD> PlayerHudClassFinder(TEXT("/Game/Blueprints/BP_Rik_HUD"));
+	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerClassFinder(
+		TEXT("/Game/Blueprints/BP_RikController"));
 
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 	HUDClass = PlayerHudClassFinder.Class;
+	GameStateClass = AMGNSSGameState::StaticClass();
+	PlayerControllerClass = PlayerControllerClassFinder.Class;
 }
 
-void AMGNSSGameMode::CompleteMission(APawn* PlayerPawn, const bool bIsSuccess)
+void AMGNSSGameMode::CompleteMission(const bool bIsSuccess) const
 {
-	if (!PlayerPawn) return;
-	
-	PlayerPawn->DisableInput(nullptr);
-
 	if (SpectateViewClass)
 	{
 		TArray<AActor*> Actors;
 		UGameplayStatics::GetAllActorsOfClass(this, SpectateViewClass, Actors);
 		if (Actors.Num() > 0)
 		{
-			const auto Controller = PlayerPawn->GetController();
-			const auto PC = Cast<APlayerController>(Controller);
-			if (PC)
+			for (auto Iter = GetWorld()->GetPlayerControllerIterator(); Iter; ++Iter)
 			{
-				const auto SpectateCamera = Actors[0];
-				PC->SetViewTargetWithBlend(SpectateCamera, 0.5f, VTBlend_Cubic);
+				const auto PC = Iter->Get();
+				if (PC)
+				{
+					const auto SpectateCamera = Actors[0];
+					PC->SetViewTargetWithBlend(SpectateCamera, 0.5f, VTBlend_Cubic);
+				}
 			}
 		}
 	}
 
-	OnMissionComplete(PlayerPawn, bIsSuccess);
+	const auto GS = Cast<AMGNSSGameState>(GetWorld()->GetGameState());
+	if (GS)
+	{
+		GS->MulticastOnMissionComplete(bIsSuccess);
+	}
 }

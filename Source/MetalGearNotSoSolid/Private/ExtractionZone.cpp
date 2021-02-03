@@ -5,7 +5,9 @@
 
 
 #include "MGNSSGameMode.h"
+#include "MGNSSGameState.h"
 #include "RikCharacter.h"
+#include "RikController.h"
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
 
@@ -30,16 +32,19 @@ void AExtractionZone::OnExtractionOverlap(
 	UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	const auto Rik = Cast<ARikCharacter>(OtherActor);
 	const auto GameMode = Cast<AMGNSSGameMode>(GetWorld()->GetAuthGameMode());
-	if(Rik && GameMode)
+	if(GameMode)
 	{
-		if(Rik->bIsObjectPickedUp)
-		{			
-			GameMode->CompleteMission(Rik, true);
-		} else
+		const auto GS = GameMode->GetGameState<AMGNSSGameState>();
+		if(GS)
 		{
-			GameMode->OnMissingObjective(Rik);
+			if(GS->IsObjectPickedUpByAPlayer())
+			{
+				GameMode->CompleteMission(true);				
+			} else
+			{
+				GS->MulticastOnMissingObjective();
+			}
 		}
 	}
 }

@@ -76,7 +76,7 @@ void ARoboJackCharacter::OnPawnSeen(APawn* SeenPawn)
 	const auto GameMode = Cast<AMGNSSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode && !GameMode->bIsMissionComplete)
 	{
-		GameMode->CompleteMission(SeenPawn, false);
+		GameMode->CompleteMission(false);
 		GameMode->bIsMissionComplete = true;
 	}
 

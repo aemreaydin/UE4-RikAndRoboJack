@@ -3,27 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+
+#include "GameFramework/GameMode.h"
 #include "MGNSSGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class METALGEARNOTSOSOLID_API AMGNSSGameMode final : public AGameModeBase
+class METALGEARNOTSOSOLID_API AMGNSSGameMode final : public AGameMode
 {
 	GENERATED_BODY()
 
 public:
 	AMGNSSGameMode();
 
-	void CompleteMission(APawn* PlayerPawn, bool bIsSuccess);
-
-	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissionComplete(APawn* PlayerPawn, bool bIsSuccess);
-
-	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissingObjective(APawn* PlayerPawn);
+	void CompleteMission(bool bIsSuccess) const;
 
 	bool bIsMissionComplete = false;
 
